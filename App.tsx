@@ -25,7 +25,16 @@ const Navbar = ({ darkMode, toggleTheme }: { darkMode: boolean; toggleTheme: () 
     setIsOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80; // Account for fixed header
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -37,7 +46,7 @@ const Navbar = ({ darkMode, toggleTheme }: { darkMode: boolean; toggleTheme: () 
   ];
 
   return (
-    <nav className={`fixed w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-dark-950/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+    <nav className={`fixed w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-dark-950/90 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div 
@@ -101,7 +110,6 @@ const Navbar = ({ darkMode, toggleTheme }: { darkMode: boolean; toggleTheme: () 
 };
 
 const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-  // Prevent background scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -126,7 +134,6 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
       />
       <div className="bg-white dark:bg-dark-900 w-full max-w-5xl h-[90vh] rounded-2xl shadow-2xl relative flex flex-col overflow-hidden animate-slide-up">
         
-        {/* Header / Hero */}
         <div className="relative h-64 sm:h-80 shrink-0">
           <img src={project.thumbnailUrl} alt={project.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent" />
@@ -136,7 +143,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           >
             <X size={24} />
           </button>
-          <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8">
+          <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 text-left">
             <span className="inline-block px-3 py-1 bg-primary-600 text-white text-xs font-bold rounded-full mb-3 uppercase tracking-wide">
               {project.category}
             </span>
@@ -145,11 +152,8 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           </div>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-12 custom-scrollbar">
-          
-          {/* Overview Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-12 no-scrollbar">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             <div className="lg:col-span-2 space-y-8">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -175,7 +179,6 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
               </div>
             </div>
 
-            {/* Sidebar Metrics */}
             <div className="space-y-6">
               <div className="bg-gray-50 dark:bg-dark-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700">
                 <h4 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-6">Impact Metrics</h4>
@@ -214,8 +217,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             </div>
           </div>
 
-          {/* Gallery */}
-          <div>
+          <div className="text-left">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Visual Gallery</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {project.galleryUrls.map((url, index) => (
@@ -232,7 +234,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
 };
 
 const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
-  <div className="bg-white dark:bg-dark-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full">
+  <div className="bg-white dark:bg-dark-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full text-left">
     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/30 rounded-lg flex items-center justify-center text-primary-600 dark:text-primary-400 mb-4">
       {icon}
     </div>
@@ -241,19 +243,84 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
   </div>
 );
 
+const ContactForm = () => {
+    const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if(!formData.name || !formData.email) return;
+        setStatus('submitting');
+        await new Promise(r => setTimeout(r, 1500));
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 3000);
+    };
+
+    if (status === 'success') {
+        return (
+            <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                    <CheckCircle2 className="text-green-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Message Sent!</h3>
+                <p className="text-gray-500 mt-2">We'll get back to you shortly.</p>
+            </div>
+        );
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                <input 
+                    required
+                    type="text" 
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all"
+                    placeholder="John Doe" 
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                <input 
+                    required
+                    type="email" 
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all"
+                    placeholder="john@example.com" 
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                <textarea 
+                    rows={4} 
+                    value={formData.message}
+                    onChange={e => setFormData({...formData, message: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all resize-none"
+                    placeholder="Tell us about your project..." 
+                />
+            </div>
+            <button 
+                type="submit" 
+                disabled={status === 'submitting'}
+                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg transition-all disabled:opacity-70 flex justify-center items-center"
+            >
+                {status === 'submitting' ? <Loader2 className="animate-spin" /> : 'Send Message'}
+            </button>
+        </form>
+    );
+};
+
 // --- Main App Component ---
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [activeCategory, setActiveCategory] = useState<ProjectCategory | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  // Theme logic
-  useEffect(() => {
-    // Default to dark mode for "cool factor"
-    setDarkMode(true);
-  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -277,7 +344,6 @@ export default function App() {
     <div className="min-h-screen font-sans bg-gray-50 dark:bg-dark-950 text-gray-900 dark:text-gray-100 transition-colors duration-300 selection:bg-primary-500 selection:text-white">
       <Navbar darkMode={darkMode} toggleTheme={() => setDarkMode(!darkMode)} />
 
-      {/* Modal */}
       {selectedProject && (
         <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
@@ -287,7 +353,7 @@ export default function App() {
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary-100 dark:bg-primary-900/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-fade-in">
               <div className="inline-flex items-center px-3 py-1 rounded-full border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-300 text-xs font-bold uppercase tracking-wider">
@@ -320,7 +386,6 @@ export default function App() {
               <div className="relative mx-auto bg-gray-900 border-gray-800 dark:border-gray-700 border-[12px] rounded-[2.5rem] h-[600px] w-[320px] shadow-2xl transform rotate-[-6deg] hover:rotate-0 transition-transform duration-500 z-10">
                 <div className="w-[148px] h-[18px] bg-gray-900 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-20"></div>
                 <div className="rounded-[2rem] overflow-hidden w-full h-full bg-white dark:bg-dark-900 relative flex flex-col">
-                    {/* Abstract UI */}
                     <div className="bg-primary-600 h-32 w-full p-6 flex flex-col justify-end shrink-0">
                          <div className="h-10 w-10 bg-white/20 rounded-full mb-4 animate-pulse"></div>
                          <div className="h-6 w-40 bg-white/20 rounded animate-pulse"></div>
@@ -335,13 +400,12 @@ export default function App() {
                 </div>
               </div>
               
-              {/* Floating Badge */}
               <div className="absolute top-1/3 -right-8 bg-white dark:bg-dark-800 p-4 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 animate-bounce z-20">
                 <div className="flex items-center gap-3">
                     <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-full text-green-600">
                         <TrendingUp size={20} />
                     </div>
-                    <div>
+                    <div className="text-left">
                         <p className="text-xs text-gray-500 uppercase font-bold">Uptime</p>
                         <p className="font-bold text-gray-900 dark:text-white">99.99%</p>
                     </div>
@@ -352,7 +416,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Features / Why Us */}
+      {/* Features Section */}
       <section className="py-24 bg-white dark:bg-dark-900 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -378,7 +442,6 @@ export default function App() {
             </p>
           </div>
 
-          {/* Filter Bar */}
           <div className="mb-12 flex flex-col md:flex-row gap-6 items-center justify-between bg-white dark:bg-dark-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
              <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar w-full md:w-auto">
                 {['All', ...Object.values(ProjectCategory).filter(c => c !== 'All')].map((cat) => (
@@ -407,14 +470,13 @@ export default function App() {
              </div>
           </div>
 
-          {/* Grid */}
           {filteredProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
                 <div 
                   key={project.id} 
                   onClick={() => setSelectedProject(project)}
-                  className="group bg-white dark:bg-dark-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col h-full"
+                  className="group bg-white dark:bg-dark-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col h-full text-left"
                 >
                   <div className="relative h-56 overflow-hidden">
                     <img
@@ -431,7 +493,7 @@ export default function App() {
                   </div>
                   
                   <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{project.name}</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 transition-colors">{project.name}</h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3 flex-grow">
                       {project.shortDescription}
                     </p>
@@ -504,7 +566,7 @@ export default function App() {
       <section id="contact" className="py-24 bg-gray-50 dark:bg-dark-950 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <div>
+              <div className="text-left">
                  <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-6">Let's Build Together</h2>
                  <p className="text-xl text-gray-500 dark:text-gray-400 mb-12 leading-relaxed">
                     Have a project in mind? We'd love to hear about it. Send us a message and we'll get back to you within 24 hours.
@@ -570,75 +632,3 @@ export default function App() {
     </div>
   );
 }
-
-// Helper for Form
-const ContactForm = () => {
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-    
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if(!formData.name || !formData.email) return;
-        setStatus('submitting');
-        await new Promise(r => setTimeout(r, 1500));
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setStatus('idle'), 3000);
-    };
-
-    if (status === 'success') {
-        return (
-            <div className="h-full flex flex-col items-center justify-center text-center py-12">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle2 className="text-green-600" size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Message Sent!</h3>
-                <p className="text-gray-500 mt-2">We'll get back to you shortly.</p>
-            </div>
-        );
-    }
-
-    return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
-                <input 
-                    required
-                    type="text" 
-                    value={formData.name}
-                    onChange={e => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all"
-                    placeholder="John Doe" 
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                <input 
-                    required
-                    type="email" 
-                    value={formData.email}
-                    onChange={e => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all"
-                    placeholder="john@example.com" 
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
-                <textarea 
-                    rows={4} 
-                    value={formData.message}
-                    onChange={e => setFormData({...formData, message: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-dark-800 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-500 outline-none transition-all resize-none"
-                    placeholder="Tell us about your project..." 
-                />
-            </div>
-            <button 
-                type="submit" 
-                disabled={status === 'submitting'}
-                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg transition-all disabled:opacity-70 flex justify-center items-center"
-            >
-                {status === 'submitting' ? <Loader2 className="animate-spin" /> : 'Send Message'}
-            </button>
-        </form>
-    );
-};
