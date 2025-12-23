@@ -5,6 +5,7 @@ import {
   Filter, ExternalLink, CheckCircle, Award, Briefcase, Code, 
   Coffee, Mail, Phone, MapPin, Send, Loader2, AlertCircle, CheckCircle2, ChevronRight
 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { PROJECTS, TEAM } from './constants';
 import { ProjectCategory, Project } from './types';
@@ -244,18 +245,55 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
 );
 
 const ContactForm = () => {
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-    
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if(!formData.name || !formData.email) return;
-        setStatus('submitting');
-        await new Promise(r => setTimeout(r, 1500));
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setStatus('idle'), 3000);
-    };
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  // EmailJS configuration (filled from user)
+  const EMAILJS_SERVICE_ID = 'service_6uoqu1r';
+  const EMAILJS_TEMPLATE_ID = 'template_8kqwjaq';
+  const EMAILJS_PUBLIC_KEY = 'L6CdG8-4T1VpRe7MC';
+
+  useEffect(() => {
+    try {
+      // initialize EmailJS (optional when passing public key to send, but helps debugging)
+      // this makes SDK ready and will surface init-time errors in console
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (emailjs as any).init && (emailjs as any).init(EMAILJS_PUBLIC_KEY);
+      console.log('EmailJS initialized');
+    } catch (initErr) {
+      console.error('EmailJS init error', initErr);
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if(!formData.name || !formData.email) return;
+    setStatus('submitting');
+    try {
+      const res = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          user_name: formData.name,
+            user_email: formData.email,
+            reply_to: formData.email,
+          message: formData.message
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('EmailJS send response', res);
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 3000);
+    } catch (err: any) {
+      console.error('emailjs send error', err);
+      // surface error to user and keep logs for debugging
+      alert('Failed to send message — check console and EmailJS dashboard for details.');
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
 
     if (status === 'success') {
         return (
