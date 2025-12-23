@@ -42,7 +42,7 @@ const Navbar = ({ darkMode, toggleTheme }: { darkMode: boolean; toggleTheme: () 
   const links = [
     { name: 'Home', id: 'home' },
     { name: 'Work', id: 'projects' },
-    { name: 'Team', id: 'team' },
+    // { name: 'Team', id: 'team' }, // removed "Team" from header per request
     { name: 'Contact', id: 'contact' },
   ];
 
@@ -578,7 +578,7 @@ export default function App() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-24 bg-white dark:bg-dark-900">
+      {/* <section id="team" className="py-24 bg-white dark:bg-dark-900">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Meet the Experts</h2>
@@ -598,7 +598,7 @@ export default function App() {
                 ))}
             </div>
          </div>
-      </section>
+      </section> */}
 
       {/* Contact Section */}
       <section id="contact" className="py-24 bg-gray-50 dark:bg-dark-950 relative">
@@ -617,7 +617,7 @@ export default function App() {
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">Email Us</p>
-                            <p className="text-lg font-medium text-gray-900 dark:text-white">hello@nextlabtech.com</p>
+                            <p className="text-lg font-medium text-gray-900 dark:text-white">ContactUs@nextlabtech.com</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-6">
@@ -626,7 +626,7 @@ export default function App() {
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">Call Us</p>
-                            <p className="text-lg font-medium text-gray-900 dark:text-white">+1 (555) 123-4567</p>
+                            <p className="text-lg font-medium text-gray-900 dark:text-white">+916280140400</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-6">
@@ -635,7 +635,7 @@ export default function App() {
                         </div>
                         <div>
                             <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">Visit Us</p>
-                            <p className="text-lg font-medium text-gray-900 dark:text-white">100 Tech Plaza, SF, CA</p>
+                            <p className="text-lg font-medium text-gray-900 dark:text-white">Delhi, India</p>
                         </div>
                     </div>
                  </div>
@@ -661,8 +661,8 @@ export default function App() {
                 &copy; {new Date().getFullYear()} NextLabTech. All rights reserved.
             </div>
             <div className="flex gap-6">
-                <a href="#" className="text-gray-400 hover:text-primary-600 transition-colors"><Github size={20} /></a>
-                <a href="#" className="text-gray-400 hover:text-primary-600 transition-colors"><Twitter size={20} /></a>
+                {/* <a href="#" className="text-gray-400 hover:text-primary-600 transition-colors"><Github size={20} /></a> */}
+                {/* <a href="#" className="text-gray-400 hover:text-primary-600 transition-colors"><Twitter size={20} /></a> */}
                 <a href="#" className="text-gray-400 hover:text-primary-600 transition-colors"><Linkedin size={20} /></a>
             </div>
          </div>
