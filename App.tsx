@@ -395,7 +395,7 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-fade-in">
               <div className="inline-flex items-center px-3 py-1 rounded-full border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-300 text-xs font-bold uppercase tracking-wider">
-                Top 1% Android Engineering Team
+                Top 1% Mobile Engineering Team
               </div>
               <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                 Apps that <br/>
