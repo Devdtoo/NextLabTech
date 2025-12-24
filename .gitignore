@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Allow GitHub Pages output
+!docs
+!docs/**
