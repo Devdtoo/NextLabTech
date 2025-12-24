@@ -40,7 +40,7 @@ const Navbar = ({ darkMode, toggleTheme }: { darkMode: boolean; toggleTheme: () 
   };
 
   const links = [
-    { name: 'Home', id: 'home' },
+    // { name: 'Home', id: 'home' },
     { name: 'Work', id: 'projects' },
     // { name: 'Team', id: 'team' }, // removed "Team" from header per request
     { name: 'Contact', id: 'contact' },
