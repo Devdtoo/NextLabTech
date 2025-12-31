@@ -115,13 +115,13 @@ export const PROJECTS: Project[] = [
       { label: 'Campuses', value: '12' },
       { label: 'Orders/Mo', value: '120k' }
     ],
-    thumbnailUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=1600',
+    thumbnailUrl: 'https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg',
     galleryUrls: ['https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&q=80&w=800']
   },
   {
     id: '6',
-    name: 'GoCourier',
-    slug: 'go-courier',
+    name: 'Health Care',
+    slug: 'Stay Healthy',
     category: ProjectCategory.HealthCare,
     shortDescription: 'A complete digital healthcare ecosystem connecting patients, doctors, and health specialists through in-person and virtual care, smart appointments, secure payments, and centralized medical records.',
     fullDescription: 'Our Healthcare & Medical Systems solution is an end-to-end platform designed to modernize clinical workflows and improve patient care through technology.\n\nThe system includes separate applications for patients, doctors, and health specialists, all connected through a secure and scalable backend.\n\nPatients can easily book appointments with doctors or specialists using in-person, video, or audio consultations, manage their medical history, access lab reports, and make online payments seamlessly. The platform supports flexible payment gateways such as PayTabs, integrated based on client and regional requirements.\n\nDoctors benefit from a powerful dashboard where they can manage appointments, consult patients online, review reports, and provide prescriptions, whether attending patients physically or remotely. Health specialists and diagnostic centers can receive test requests, upload medical reports with images, and share results directly with patients and doctors in real time.\n\nThis unified healthcare solution improves accessibility, reduces operational overhead, and delivers a smooth digital experience for all stakeholders involved in patient care.',
