@@ -122,22 +122,28 @@ export const PROJECTS: Project[] = [
     id: '6',
     name: 'GoCourier',
     slug: 'go-courier',
-    category: ProjectCategory.Logistics,
-    shortDescription: 'Last-mile logistics and fleet management.',
-    fullDescription: 'An enterprise solution for managing fleets of 500+ vehicles. Includes a driver app, a warehouse scanner app, and a manager dashboard. We utilized the Zebra SDK for industrial barcode scanning hardware integration.',
-    tags: ['Android Enterprise', 'Zebra SDK', 'MQTT', 'Java'],
+    category: ProjectCategory.HealthCare,
+    shortDescription: 'A complete digital healthcare ecosystem connecting patients, doctors, and health specialists through in-person and virtual care, smart appointments, secure payments, and centralized medical records.',
+    fullDescription: 'Our Healthcare & Medical Systems solution is an end-to-end platform designed to modernize clinical workflows and improve patient care through technology.\n\nThe system includes separate applications for patients, doctors, and health specialists, all connected through a secure and scalable backend.\n\nPatients can easily book appointments with doctors or specialists using in-person, video, or audio consultations, manage their medical history, access lab reports, and make online payments seamlessly. The platform supports flexible payment gateways such as PayTabs, integrated based on client and regional requirements.\n\nDoctors benefit from a powerful dashboard where they can manage appointments, consult patients online, review reports, and provide prescriptions, whether attending patients physically or remotely. Health specialists and diagnostic centers can receive test requests, upload medical reports with images, and share results directly with patients and doctors in real time.\n\nThis unified healthcare solution improves accessibility, reduces operational overhead, and delivers a smooth digital experience for all stakeholders involved in patient care.',
+
+    tags: ['Android Ios web', 'Agora SDK', 'Kotlin','Flutter'],
     features: [
-      'Barcode scanning optimization',
-      'Route manifesto management',
-      'Proof of delivery (Signature/Photo)',
-      'Vehicle telemetry'
-    ],
+  'In-person, video, and audio consultation booking',
+  'Separate applications for patients, doctors, and health specialists',
+  'Secure online payments (PayTabs & client-preferred gateways)',
+  'Digital medical records and patient history management',
+  'Diagnostic test booking and report uploads with images',
+  'Doctor availability, scheduling, and appointment management',
+  'Real-time notifications for appointments and reports',
+  'Telemedicine support with secure video and audio calls'
+],
+
     metrics: [
       { label: 'Fleets', value: '45' },
-      { label: 'Packages', value: '10M+' }
+      { label: 'Packages', value: '1M+' }
     ],
-    thumbnailUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1600',
-    galleryUrls: ['https://images.unsplash.com/photo-1566576912902-48fdb3067936?auto=format&fit=crop&q=80&w=800']
+    thumbnailUrl: 'https://images.pexels.com/photos/3757951/pexels-photo-3757951.jpeg',
+    galleryUrls: ['https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg','https://images.pexels.com/photos/3957987/pexels-photo-3957987.jpeg']
   },
   {
     id: '7',

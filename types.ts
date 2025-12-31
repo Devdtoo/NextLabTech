@@ -3,7 +3,7 @@ export enum ProjectCategory {
   RideSharing = 'Ride Sharing',
   Chatting = 'Chatting',
   FoodDelivery = 'Food Delivery',
-  Logistics = 'Logistics',
+  HealthCare = 'Healthcare & Medical Systems',
   Fintech = 'Fintech',
 }
 
