@@ -142,8 +142,8 @@ export const PROJECTS: Project[] = [
       { label: 'Fleets', value: '45' },
       { label: 'Packages', value: '1M+' }
     ],
-    thumbnailUrl: 'https://images.pexels.com/photos/3757951/pexels-photo-3757951.jpeg',
-    galleryUrls: ['https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg','https://images.pexels.com/photos/3957987/pexels-photo-3957987.jpeg']
+    thumbnailUrl: 'https://images.pexels.com/photos/7089017/pexels-photo-7089017.jpeg',
+    galleryUrls: ['https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg','https://images.pexels.com/photos/3957987/pexels-photo-3957987.jpeg']
   },
   {
     id: '7',
